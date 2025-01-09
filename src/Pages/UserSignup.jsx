@@ -77,15 +77,20 @@ const UserSignup = () => {
           >
             Sign Up
           </button>
-
+          <button className="w-full px-6 py-3 bg-green-700 text-white rounded-lg text-lg hover:bg-green-900 transition duration-200 mt-8">
+            <Link to={'/captain-signup'} >Signup as captain</Link>
+          </button>
           {/* Link to Log In Page */}
           <p className="mt-4 text-center text-gray-600">
             Already have an account?{' '}
-            <Link to={'/login'}>Login</Link>
+            <Link
+              to={'/login'}
+              className="text-green-500 hover:text-green-700 font-semibold"
+            >
+              Login
+            </Link>
           </p>
-          <button className="w-full px-6 py-3 bg-green-700 text-white rounded-lg text-lg hover:bg-green-900 transition duration-200 mt-5">
-            <Link to={'/captain-signup'} >Signup as captain</Link>
-          </button>
+
         </form>
       </div>
     </div>
