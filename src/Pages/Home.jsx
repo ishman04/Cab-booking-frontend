@@ -8,7 +8,7 @@ const Home = () => {
       {/* Header */}
       <header className="flex justify-between items-center px-8 py-4 bg-white shadow-md">
         <div className="text-2xl font-bold text-gray-800">RideNow</div>
-        <nav className="flex space-x-6">
+        <nav className="flex space-x-6 justify-center items-center">
           <a href="#about" className="text-gray-700 hover:text-gray-900">
             About
           </a>

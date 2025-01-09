@@ -5,10 +5,16 @@ const UserSignup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userData, setUserData] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle signup logic here
+    setUserData({
+      name: name,
+      email: email,
+      password: password
+    })
     console.log('Name:', name);
     console.log('Email:', email);
     console.log('Password:', password);
