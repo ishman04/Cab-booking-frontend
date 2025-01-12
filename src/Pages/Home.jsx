@@ -1,7 +1,14 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logoutUser } from "../Redux/Slices/UserAuthSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn)
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  }
   return(
     <>
       <div className="bg-gray-50 min-h-screen flex flex-col">
@@ -15,12 +22,12 @@ const Home = () => {
           <a href="#features" className="text-gray-700 hover:text-gray-900">
             Features
           </a>
-          <Link className="text-gray-700 hover:text-gray-900" to={'/login'}>Login</Link>
-          <Link to={'/signup'}
-            className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700"
-          >
-            Sign Up
-          </Link>
+          { isLoggedIn ? 
+          (<Link onClick={handleLogout} className="text-gray-700 hover:text-gray-900">Logout</Link>) 
+          : (<Link className="text-gray-700 hover:text-gray-900" to={'/login'}>Login</Link>)
+           }
+          
+          
         </nav>
       </header>
 

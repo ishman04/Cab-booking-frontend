@@ -1,23 +1,38 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signupUser } from "../Redux/Slices/UserAuthSlice";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 const UserSignup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userData, setUserData] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle signup logic here
-    setUserData({
+    
+    // Directly create userData here to avoid relying on async state update
+    const userData = {
       name: name,
       email: email,
       password: password
-    })
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Password:', password);
+    };
+
+    // Dispatch the signup action
+    try {
+      const apiResponse = await dispatch(signupUser(userData));
+
+      if (apiResponse?.payload?.data) {
+        navigate('/login'); // Redirect to login page if signup is successful
+      } else {
+        toast.error('Signup failed. Try again later');
+      }
+    } catch (error) {
+      toast.error('Something went wrong. Please try again later.');
+    }
   };
 
   return (
@@ -83,9 +98,12 @@ const UserSignup = () => {
           >
             Sign Up
           </button>
+          
+          {/* Signup as Captain Button */}
           <button className="w-full px-6 py-3 bg-green-700 text-white rounded-lg text-lg hover:bg-green-900 transition duration-200 mt-8">
-            <Link to={'/captain-signup'} >Signup as captain</Link>
+            <Link to={'/captain-signup'}>Signup as captain</Link>
           </button>
+          
           {/* Link to Log In Page */}
           <p className="mt-4 text-center text-gray-600">
             Already have an account?{' '}
@@ -96,7 +114,6 @@ const UserSignup = () => {
               Login
             </Link>
           </p>
-
         </form>
       </div>
     </div>
