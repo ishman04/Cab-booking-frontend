@@ -10,36 +10,27 @@ const UserLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Ensure userData is updated here before dispatching
-    const userData = {
-      email: email,
-      password: password
-    };
+    const userData = { email, password };
     
-    // Check if email and password are provided
-    if (!userData.email || !userData.password) {
+    if (!email || !password) {
       toast.error("Please enter both email and password.");
       return;
     }
 
     try {
-      // Dispatch loginUser action
       const apiResponse = await dispatch(loginUser(userData));
 
-      // Check if login is successful
-      console.log(apiResponse);
       if (apiResponse?.payload) {
-        navigate('/'); // Navigate to the home page on success
+        navigate('/');
       } else {
         toast.error('Invalid email address or password');
       }
     } catch (error) {
-      // Handle error responses
       if (error.response?.status === 404) {
-        toast.error('Invalid email address'); // Show "Invalid email" for 404 errors
+        toast.error('Invalid email address');
       } else {
         toast.error('Something went wrong. Please try again.');
       }
@@ -47,16 +38,15 @@ const UserLogin = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col items-center justify-center py-8">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">
-          Log In to RideNow
+    <div className="bg-black min-h-screen flex flex-col items-center justify-center py-12">
+      <div className="w-full max-w-md bg-gray-900 p-8 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-extrabold text-gray-300 text-center mb-6">
+          User Log in
         </h2>
 
         <form onSubmit={handleSubmit}>
-          {/* Email Field */}
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+            <label htmlFor="email" className="block text-sm font-semibold text-gray-300">
               Email Address
             </label>
             <input
@@ -64,15 +54,14 @@ const UserLogin = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full px-4 py-2 mt-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
               placeholder="Enter your email"
               required
             />
           </div>
 
-          {/* Password Field */}
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-300">
               Password
             </label>
             <input
@@ -80,29 +69,27 @@ const UserLogin = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full px-4 py-2 mt-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600"
               placeholder="Enter your password"
               required
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full px-6 py-3 bg-gray-900 text-white rounded-lg text-lg hover:bg-gray-700 transition duration-200"
+            className="w-full px-6 py-3 bg-red-600 text-gray-900 rounded-lg text-lg hover:bg-red-700 transition duration-300"
           >
             Log In
           </button>
 
-          {/* Link to Sign Up Page */}
-          <button type="" className="w-full px-6 py-3 bg-green-700 text-white rounded-lg text-lg hover:bg-green-900 transition duration-200 mt-8">
-            <Link to={'/captain-login'} >Login as Captain</Link>
+          <button type="" className="w-full px-6 py-3 bg-gray-800 text-gray-400 rounded-lg text-lg hover:bg-gray-700 transition duration-300 mt-8">
+            <Link to={'/captain-login'}>Login as Captain</Link>
           </button>
-          <p className="mt-4 text-center text-gray-600">
+          <p className="mt-4 text-center text-gray-400">
             Don't have an account?{' '}
             <Link
               to={'/signup'}
-              className="text-green-500 hover:text-green-700 font-semibold"
+              className="text-red-600 hover:text-red-700 font-semibold"
             >
               Create a new account
             </Link>

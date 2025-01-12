@@ -1,38 +1,50 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signupCaptain } from "../Redux/Slices/CaptainAuthSlice";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 const CaptainSignup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [captainData, setcaptainData] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle signup logic here
-    setcaptainData(
-      {
-        name: name,
-        email: email,
-        password: password
+
+    const captainData = { name, email, password };
+
+    if (!name || !email || !password) {
+      toast.error("Please fill all fields.");
+      return;
+    }
+
+    try {
+      const apiResponse = await dispatch(signupCaptain(captainData));
+
+      if (apiResponse?.payload) {
+        navigate('/captain-login'); // Redirect to captain login page if signup is successful
+      } else {
+        toast.error('Signup failed. Try again later');
       }
-    )
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Password:', password);
+    } catch (error) {
+      toast.error('Something went wrong. Please try again later.');
+    }
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col items-center justify-center py-8">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">
-          Create Your Account
+    <div className="bg-black min-h-screen flex flex-col items-center justify-center py-12">
+      <div className="w-full max-w-md bg-gray-900 p-8 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-extrabold text-gray-300 text-center mb-6">
+          Captain Sign Up
         </h2>
 
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
+            <label htmlFor="name" className="block text-sm font-semibold text-gray-300">
               Full Name
             </label>
             <input
@@ -40,7 +52,7 @@ const CaptainSignup = () => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full px-4 py-2 mt-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your full name"
               required
             />
@@ -48,7 +60,7 @@ const CaptainSignup = () => {
 
           {/* Email Field */}
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+            <label htmlFor="email" className="block text-sm font-semibold text-gray-300">
               Email Address
             </label>
             <input
@@ -56,7 +68,7 @@ const CaptainSignup = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full px-4 py-2 mt-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your email"
               required
             />
@@ -64,7 +76,7 @@ const CaptainSignup = () => {
 
           {/* Password Field */}
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-300">
               Password
             </label>
             <input
@@ -72,7 +84,7 @@ const CaptainSignup = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full px-4 py-2 mt-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Create your password"
               required
             />
@@ -81,24 +93,27 @@ const CaptainSignup = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full px-6 py-3 bg-gray-900 text-white rounded-lg text-lg hover:bg-gray-700 transition duration-200"
+            className="w-full px-6 py-3 bg-blue-600 text-gray-900 rounded-lg text-lg hover:bg-blue-700 transition duration-300"
           >
             Sign Up
           </button>
-          <button className="w-full px-6 py-3 bg-yellow-500 text-white rounded-lg text-lg hover:bg-yellow-700 transition duration-200 mt-8">
-            <Link to={'/signup'} >Signup as user</Link>
+
+          <button
+            type=""
+            className="w-full px-6 py-3 bg-gray-800 text-gray-400 rounded-lg text-lg hover:bg-gray-700 transition duration-300 mt-8"
+          >
+            <Link to={'/signup'}>Signup as User</Link>
           </button>
-          {/* Link to Log In Page */}
-          <p className="mt-4 text-center text-gray-600">
+
+          <p className="mt-4 text-center text-gray-400">
             Already have an account?{' '}
             <Link
               to={'/captain-login'}
-              className="text-yellow-500 hover:text-yellow-700 font-semibold"
+              className="text-blue-600 hover:text-blue-700 font-semibold"
             >
               Login
             </Link>
           </p>
-
         </form>
       </div>
     </div>
